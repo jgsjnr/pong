@@ -176,15 +176,19 @@ public class Cena implements GLEventListener{
     }
     
     public void colisaoQuadrado(){
-//        LADO DO QUADRADO ESQUERDO
+////        LADO DO QUADRADO ESQUERDO
 //        if(this.xAtual <= -this.localizacaoQuadrado)mudaDirecao();
-//        LADO DIREITO DO QUADRADO
+////        LADO DIREITO DO QUADRADO
 //        if(this.xAtual >= this.localizacaoQuadrado)mudaDirecao();
-//        BASE DO QUADRADO
+////        BASE DO QUADRADO
 //        if(this.yAtual+this.posicaoInicialEsfera+this.localizacaoQuadrado >= 0) mudaDirecao();
-//        TETO DO QUADRADO
+////        TETO DO QUADRADO
 //        if(this.yAtual+this.posicaoInicialEsfera >= this.localizacaoQuadrado) mudaDirecao();
-
+    if((this.xAtual >= -this.localizacaoQuadrado &&
+        this.xAtual <= this.localizacaoQuadrado) &&
+        (this.yAtual+this.posicaoInicialEsfera+this.localizacaoQuadrado >= 0 &&
+        this.yAtual+this.posicaoInicialEsfera <= this.localizacaoQuadrado)
+       )mudaDirecao();
     }
     
     public void geradorDeColisao(){
