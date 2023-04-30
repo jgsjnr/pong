@@ -26,7 +26,7 @@ public class Tela {
             gl.glVertex2d(this.tTela, this.tTela);
             gl.glVertex2d(this.tTela, -this.tTela);
             gl.glVertex2d(-this.tTela, -this.tTela);
-            gl.glVertex2d(-this.tTela, this.tTela);
+//            gl.glVertex2d(-this.tTela, this.tTela);
         gl.glEnd();
         gl.glFlush();
         gl.glPopMatrix();

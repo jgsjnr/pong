@@ -95,7 +95,7 @@ public class Cena implements GLEventListener{
     }
     
     public void novoJogo(){
-        this.xAtual = this.yAtual = 0;
+        this.xAtual = this.yAtual = this.valorVariavel = 0;
         this.direcaoX = 'X';
         this.translacao = 0;
         pararJogo();
@@ -166,7 +166,7 @@ public class Cena implements GLEventListener{
             this.direcaoX = 'X';
             if(this.scoreJogo < 200)this.scoreJogo += 10;
             else validarScore();
-            diminuirTamanhoBarra();
+            //diminuirTamanhoBarra();
             this.valorVariavel = this.valorVariavelAleatorio();
             System.out.print("Score atual: ");
             System.out.println(this.scoreJogo);
@@ -176,7 +176,7 @@ public class Cena implements GLEventListener{
             this.direcaoX = 'X';
             if(this.scoreJogo < 200)this.scoreJogo += 10;
             else validarScore();
-            diminuirTamanhoBarra();
+            //diminuirTamanhoBarra();
             this.valorVariavel = this.valorVariavelAleatorio();
             System.out.print("Score atual: ");
             System.out.println(this.scoreJogo);
@@ -198,6 +198,9 @@ public class Cena implements GLEventListener{
         else if(this.xAtual <= -this.tTela && this.yAtual <=this.tTela) direcaoX = 'E';
         //PAREDE DIREIRA
         else if(this.xAtual >= this.tTela && this.yAtual <=this.tTela) direcaoX = 'D';
+        
+        else if(this.xAtual <= -this.tTela && this.yAtual >= this.tTela){this.ladoEsfera = 'e'; this.direcaoX = 'T'; System.out.println("Correção manual acionada");}
+        else if(this.xAtual >= this.tTela && this.yAtual >= this.tTela){this.ladoEsfera = 'd'; this.direcaoX = 'T'; System.out.println("Correção manual acionada");}
         
         switch(ladoEsfera){
             case 'd' -> {
@@ -227,9 +230,9 @@ public class Cena implements GLEventListener{
         //dados iniciais da cena
         glu = new GLU();
         //Estabelece as coordenadas do SRU (Sistema de Referencia do Universo)
-        this.tTela = 1f;
         xMin = yMin = zMin = -1f;
-        xMax = yMax = zMax = 1f;    
+        xMax = yMax = zMax  = 1f;    
+        this.tTela = 1.6f;
         geradorLadoRandomico();
         this.tBarra = 0.2f;
         this.faseJogo = 1;
@@ -244,7 +247,7 @@ public class Cena implements GLEventListener{
         Barra barra = new Barra(this.tBarra);
         Esfera esfera = new Esfera();
         Quadrado quadrado = new Quadrado(0.2f);
-        Tela tela = new Tela(tTela);
+        //Tela tela = new Tela(tTela);
         
         //define a cor da janela (R, G, G, alpha)
         gl.glClearColor(0, 0, 0, 1);        
@@ -258,7 +261,7 @@ public class Cena implements GLEventListener{
         */
         
         gl.glColor3f(1,1,1); //cor branca        
-        tela.draw(gl);
+        //tela.draw(gl);
         if(!jogoPausado && !jogoParado) geradorDeColisao();
         esfera.avancoEsfera(this.xAtual, this.yAtual);
         

@@ -9,14 +9,19 @@ import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.util.FPSAnimator;
 import cena.atividade.input.KeyBoard;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 /**
  *
  * @author Kakugawa
  */
 public class Renderer {
     private static GLWindow window = null;
-    public static int screenWidth = 640;  //1280
-    public static int screenHeight = 480; //960 
+    public static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    public static final int width = (int)screenSize.getWidth();
+    public static final int height = (int)screenSize.getHeight();
+    public static int screenWidth = width;//640;  //1280
+    public static int screenHeight = height;//480; //960 
 
     //Cria a janela de rendeziração do JOGL
     public static void init(){        
@@ -24,9 +29,9 @@ public class Renderer {
         GLProfile profile = GLProfile.get(GLProfile.GL2);
         GLCapabilities caps = new GLCapabilities(profile);        
         window = GLWindow.create(caps);
-        window.setResizable(false);
-        //window.setSize(screenWidth, screenHeight);
         //window.setResizable(false);
+        //window.setSize(screenWidth, screenHeight);
+        window.setResizable(false);
         
         Cena cena = new Cena();
         
