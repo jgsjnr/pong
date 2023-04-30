@@ -13,28 +13,30 @@ public class Quadrado {
     
     
     private float tQuadrado;
-    public Quadrado(float tQuadrado){
+
+    public float gettQuadrado() {
+        return tQuadrado;
+    }
+
+    public void settQuadrado(float tQuadrado) {
         this.tQuadrado = tQuadrado;
     }
     
+    
+    public Quadrado(float tQuadrado){
+        this.tQuadrado = tQuadrado*0.1f;
+    }
+    
     public void draw(GL2 gl){
-//        gl.glPushMatrix();
-//        gl.glBegin(GL2.GL_QUADS);
-//            gl.glVertex2f(-1.6f+this.tQuadrado, 1.6f-this.tQuadrado);
-//            gl.glVertex2f(this.tQuadrado, 1.6f-this.tQuadrado);
-//            gl.glVertex2f(this.tQuadrado, this.tQuadrado);
-//            gl.glVertex2f(-1.6f+this.tQuadrado, this.tQuadrado);
-//        gl.glEnd();
-//        gl.glPopMatrix();
-//        
         gl.glPushMatrix();
         gl.glBegin(GL2.GL_QUADS);
-            gl.glVertex2f(-1.6f*0.1f, 1.6f*0.1f);
-            gl.glVertex2f(1.6f*0.1f, 1.6f*0.1f);
-            gl.glVertex2f(1.6f*0.1f, -1.6f*0.1f);
-            gl.glVertex2f(-1.6f*0.1f, -1.6f*0.1f);
+            gl.glVertex2f(-this.tQuadrado, this.tQuadrado);
+            gl.glVertex2f(this.tQuadrado, this.tQuadrado);
+            gl.glVertex2f(this.tQuadrado, -this.tQuadrado);
+            gl.glVertex2f(-this.tQuadrado, -this.tQuadrado);
         gl.glEnd();
         gl.glPopMatrix();
+        System.out.println(tQuadrado);
     }
     
     

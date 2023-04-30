@@ -19,18 +19,22 @@ public class Esfera {
     private float avancoDireita = 0;
     private float xAtual;
     private float yAtual;
+    private float posicaoInicialEsfera;
     
     
-    public void avancoEsfera(float xAtual, float yAtual){
+    public void avancoEsfera(float xAtual, float yAtual, float posicaoInicialEsfera){
         this.xAtual += xAtual;
         this.yAtual += yAtual;
+        this.posicaoInicialEsfera = posicaoInicialEsfera;
     }
+    
+    
     public void draw(GL2 gl){
         double limite = 2 * Math.PI;
         double i, cX = 0, cY = 0;
         
         cX = 0f;
-        cY = -0.7f;
+        cY = this.posicaoInicialEsfera;
         this.rX = 0.05f;
         this.rY = 0.05f;
         gl.glPushMatrix();
