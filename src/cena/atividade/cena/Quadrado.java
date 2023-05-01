@@ -19,12 +19,10 @@ public class Quadrado {
     }
 
     public void settQuadrado(float tQuadrado) {
-        this.tQuadrado = tQuadrado;
+        this.tQuadrado = tQuadrado*0.2f;
     }
     
-    
-    public Quadrado(float tQuadrado){
-        this.tQuadrado = tQuadrado*0.1f;
+    public Quadrado(){
     }
     
     public void draw(GL2 gl){
@@ -36,7 +34,7 @@ public class Quadrado {
             gl.glVertex2f(-this.tQuadrado, -this.tQuadrado);
         gl.glEnd();
         gl.glPopMatrix();
-        System.out.println(tQuadrado);
+
     }
     
     

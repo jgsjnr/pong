@@ -34,12 +34,12 @@ public class KeyBoard implements KeyListener{
         }
         if(e.getKeyChar() == 'R'){
             System.out.println("negativo");
-            cena.rotacao -= 10;
+            cena.ressetarJogo();
         }
         if(e.getKeyChar() == 'a'){
             if(cena.isJogoParado()) cena.retornarJogoParado();
             if(cena.translacao <= -1*cena.tLimiteTela);
-            else cena.translacao -= 0.04;
+            else cena.translacao -= 0.07;
         }
         if(e.getKeyChar() == 'd'){
             if(cena.isJogoParado()) cena.retornarJogoParado();

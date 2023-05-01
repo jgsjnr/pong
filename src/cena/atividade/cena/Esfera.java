@@ -20,6 +20,64 @@ public class Esfera {
     private float xAtual;
     private float yAtual;
     private float posicaoInicialEsfera;
+    private float valorVariavel;
+    private float velocidadeJogo;
+
+    public void pulaFora(){
+        if(this.xAtual > 0) this.xAtual += 0.05f;
+        else this.xAtual += -0.5f;
+        if(this.yAtual > 0) this.yAtual += 0.05f;
+        else this.xAtual += -0.5f;
+    }
+    public float getValorVariavel() {
+        return valorVariavel;
+    }
+
+    public void setValorVariavel(float valorVariavel) {
+        this.valorVariavel = valorVariavel;
+    }
+
+    public float getxAtual() {
+        return xAtual;
+    }
+
+    public void setxAtual(float xAtual) {
+        this.xAtual = xAtual;
+    }
+
+    public float getyAtual() {
+        return yAtual;
+    }
+
+    public void setyAtual(float yAtual) {
+        this.yAtual = yAtual;
+    }
+
+    public float getVelocidadeJogo() {
+        return velocidadeJogo;
+    }
+
+    public void setVelocidadeJogo(float velocidadeJogo) {
+        this.velocidadeJogo = velocidadeJogo;
+    }
+    
+    
+    public void sobeDir(){
+        this.xAtual += 0.02f+this.velocidadeJogo;
+        this.yAtual += 0.01f+valorVariavel+this.velocidadeJogo;
+    }
+    public void desceDir(){
+        this.xAtual -= 0.02+this.velocidadeJogo;
+        this.yAtual -= 0.01f+valorVariavel+this.velocidadeJogo;
+    }
+    public void sobeEsq(){
+        this.xAtual -= 0.02+this.velocidadeJogo;
+        this.yAtual += 0.01f+valorVariavel+this.velocidadeJogo;
+    }
+    public void desceEsq(){
+        this.xAtual += 0.02+this.velocidadeJogo;
+        this.yAtual -= 0.01f+valorVariavel+this.velocidadeJogo;
+    }
     
     
     public void avancoEsfera(float xAtual, float yAtual, float posicaoInicialEsfera){
@@ -27,6 +85,7 @@ public class Esfera {
         this.yAtual += yAtual;
         this.posicaoInicialEsfera = posicaoInicialEsfera;
     }
+    
     
     
     public void draw(GL2 gl){

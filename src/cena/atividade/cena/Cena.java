@@ -8,6 +8,9 @@ import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.glu.GLU;
+import com.jogamp.opengl.util.awt.TextRenderer;
+import java.awt.Color;
+import java.awt.Font;
 import java.util.Random;
 /**
  *
@@ -18,25 +21,36 @@ public class Cena implements GLEventListener{
     
     GLU glu;
     
+    private TextRenderer textRenderer;
+    
+    private int mode;
+   
+    String m = mode == GL2.GL_LINE ? "LINE" : "FILL";
+    
+    
+    
     private int faseJogo;
     private boolean jogoPausado = false;
     private float velocidadeJogo = 0.0f;
     private int scoreJogo = 0;
     private int vidasJogador = 5;
     private char direcaoX = 0;
-    private float xAtual = 0;
-    private float yAtual = 0;
+  //  private float xAtual = 0;
+ //   private float yAtual = 0;
     private char ladoEsfera;
     private float tBarra;
     private boolean jogoParado = false;
-    private float valorVariavel;
     private float tTela;
-    private float posicaoInicialEsfera = -0.7f;
+    private final float posicaoInicialEsfera = -0.7f;
     private float localizacaoQuadrado;
     
     public float tLimiteTela = 1f;
     public float translacao;
     public float rotacao;
+    
+    Barra barra = new Barra(this.tBarra);
+    Esfera esfera = new Esfera();
+    Quadrado quadrado = new Quadrado();
 
     public float getVelocidadeJogo() {
         return velocidadeJogo;
@@ -50,7 +64,9 @@ public class Cena implements GLEventListener{
         this.velocidadeJogo = 0;
         this.vidasJogador = 0;
         this.scoreJogo = 0;
-        this.xAtual = this.yAtual = 0;
+        esfera.setxAtual(0);
+        esfera.setyAtual(0);
+        esfera.setValorVariavel(0);
         this.faseJogo = 0;
         this.direcaoX = 'X';
         this.tBarra = 0.2f;
@@ -94,7 +110,9 @@ public class Cena implements GLEventListener{
     }
     
     public void novoJogo(){
-        this.xAtual = this.yAtual = this.valorVariavel = 0;
+        esfera.setxAtual(0);
+        esfera.setyAtual(0);
+        esfera.setValorVariavel(0);
         this.direcaoX = 'X';
         this.translacao = 0;
         pararJogo();
@@ -106,28 +124,11 @@ public class Cena implements GLEventListener{
         double xAletorio = -0.8f + Math.random() * 1.6f;
         if (xAletorio > 0) {
             this.ladoEsfera = 'e';
-            sobeEsq();
+            esfera.sobeEsq();
         } else {
             this.ladoEsfera = 'd';
-            sobeDir();
+            esfera.sobeDir();
 	}
-    }
-    
-    public void sobeDir(){
-        this.xAtual += 0.02f+this.velocidadeJogo;
-        this.yAtual += 0.01f+valorVariavel+this.velocidadeJogo;
-    }
-    public void desceDir(){
-        this.xAtual -= 0.02+this.velocidadeJogo;
-        this.yAtual -= 0.01f+valorVariavel+this.velocidadeJogo;
-    }
-    public void sobeEsq(){
-        this.xAtual -= 0.02+this.velocidadeJogo;
-        this.yAtual += 0.01f+valorVariavel+this.velocidadeJogo;
-    }
-    public void desceEsq(){
-        this.xAtual += 0.02+this.velocidadeJogo;
-        this.yAtual -= 0.01f+valorVariavel+this.velocidadeJogo;
     }
     
     public void perdeVida(){
@@ -147,7 +148,6 @@ public class Cena implements GLEventListener{
         Random rd = new Random();
         float valorFinal = rd.nextFloat()/10;
         valorFinal = valorFinal <= 0.03 ? valorFinal : 0.01f;
-        System.out.println(valorFinal);
         return valorFinal;
     }
     
@@ -157,78 +157,88 @@ public class Cena implements GLEventListener{
     }
     
     public void colisaoBarra(){
-        if(this.yAtual <= -0.1f && (this.xAtual >= this.translacao && this.xAtual <= this.translacao+this.tBarra)){
+        if(esfera.getyAtual() <= -0.1f && (esfera.getxAtual() >= this.translacao && esfera.getxAtual() <= this.translacao+this.tBarra)){
             if(this.direcaoX != 'd')this.ladoEsfera = 'd';
             this.direcaoX = 'X';
             if(this.scoreJogo < 200)this.scoreJogo += 10;
             else validarScore();
             //diminuirTamanhoBarra();
-            this.valorVariavel = this.valorVariavelAleatorio();
+            esfera.setValorVariavel(this.valorVariavelAleatorio());
         }
-        if(this.yAtual <= -0.1f && (this.xAtual >= this.translacao-this.tBarra && this.xAtual <= this.translacao)){
+        if(esfera.getyAtual() <= -0.1f && (esfera.getxAtual() >= this.translacao-this.tBarra && esfera.getxAtual() <= this.translacao)){
             if(this.direcaoX != 'e')this.ladoEsfera = 'e';
             this.direcaoX = 'X';
             if(this.scoreJogo < 200)this.scoreJogo += 10;
             else validarScore();
             //diminuirTamanhoBarra();
-            this.valorVariavel = this.valorVariavelAleatorio();
+            esfera.setValorVariavel(this.valorVariavelAleatorio());
         }
     }
     
     public void colisaoQuadrado(){
-////        LADO DO QUADRADO ESQUERDO
-//        if(this.xAtual <= -this.localizacaoQuadrado)mudaDirecao();
-////        LADO DIREITO DO QUADRADO
-//        if(this.xAtual >= this.localizacaoQuadrado)mudaDirecao();
-////        BASE DO QUADRADO
-//        if(this.yAtual+this.posicaoInicialEsfera+this.localizacaoQuadrado >= 0) mudaDirecao();
-////        TETO DO QUADRADO
-//        if(this.yAtual+this.posicaoInicialEsfera >= this.localizacaoQuadrado) mudaDirecao();
-    if((this.xAtual >= -this.localizacaoQuadrado &&
-        this.xAtual <= this.localizacaoQuadrado) &&
-        (this.yAtual+this.posicaoInicialEsfera+this.localizacaoQuadrado >= 0 &&
-        this.yAtual+this.posicaoInicialEsfera <= this.localizacaoQuadrado)
-       )mudaDirecao();
+        
+        //if(esfera.getxAtual() > -quadrado.gettQuadrado() && esfera.getxAtual() < quadrado.gettQuadrado());
+        //if(esfera.getyAtual() < quadrado.gettQuadrado());
+        //if(esfera.getyAtual() >= 3*quadrado.gettQuadrado() && (esfera.getxAtual() <= -quadrado.gettQuadrado() && esfera.getxAtual() >= quadrado.gettQuadrado())) mudaDirecao();
+        //else if(esfera.getyAtual() >= quadrado.gettQuadrado() && (esfera.getxAtual() <= -quadrado.gettQuadrado() && esfera.getxAtual() >= quadrado.gettQuadrado()))mudaDirecao();
+        //else if(esfera.getxAtual() <= -quadrado.gettQuadrado() && (esfera.getyAtual() <= quadrado.gettQuadrado() && esfera.getyAtual() <= 3*quadrado.gettQuadrado())) mudaDirecao();
+        //else if(esfera.getxAtual() >= quadrado.gettQuadrado() && (esfera.getyAtual() <= quadrado.gettQuadrado() && esfera.getyAtual() <= 3*quadrado.gettQuadrado())) mudaDirecao();
+    }
+    
+    public void colisaoParedes(){
+        //TETO
+        if(esfera.getxAtual() >= -this.tTela && esfera.getyAtual() >= this.tTela) direcaoX = 'T';
+        //CHAO
+        else if(esfera.getxAtual() >= -this.tTela && esfera.getyAtual() <=-0.2) direcaoX = 'C';
+        //PAREDE ESQUERDA
+        else if(esfera.getxAtual() <= -this.tTela && esfera.getyAtual() <=this.tTela) direcaoX = 'E';
+        //PAREDE DIREIRA
+        else if(esfera.getxAtual() >= this.tTela && esfera.getyAtual() <=this.tTela) direcaoX = 'D';
+        //ACIMA DE -1 e 1
+        else if(esfera.getxAtual() <= -this.tTela && esfera.getyAtual() >= this.tTela){this.ladoEsfera = 'e'; this.direcaoX = 'T';}
+        //ACIMA DE 1 e 1
+        else if(esfera.getxAtual() >= this.tTela && esfera.getyAtual() >= this.tTela){this.ladoEsfera = 'd'; this.direcaoX = 'T';}
     }
     
     public void geradorDeColisao(){
-        //COLISAO QUADRADO
-        colisaoQuadrado();
         //COLISAO BARRA
         colisaoBarra();
-        //TETO
-        if(this.xAtual >= -this.tTela && this.yAtual >= this.tTela) direcaoX = 'T';
-        //CHAO
-        else if(this.xAtual >= -this.tTela && this.yAtual <=-0.2) direcaoX = 'C';
-        //PAREDE ESQUERDA
-        else if(this.xAtual <= -this.tTela && this.yAtual <=this.tTela) direcaoX = 'E';
-        //PAREDE DIREIRA
-        else if(this.xAtual >= this.tTela && this.yAtual <=this.tTela) direcaoX = 'D';
-        //ACIMA DE -1 e 1
-        else if(this.xAtual <= -this.tTela && this.yAtual >= this.tTela){this.ladoEsfera = 'e'; this.direcaoX = 'T';}
-        //ACIMA DE 1 e 1
-        else if(this.xAtual >= this.tTela && this.yAtual >= this.tTela){this.ladoEsfera = 'd'; this.direcaoX = 'T';}
+        //COLISAO PAREDES
+        colisaoParedes();
+        //COLSIAO QUADRADO
+        colisaoQuadrado();
+        
         
         switch(ladoEsfera){
             case 'd' -> {
                 switch(direcaoX){
-                    case 'T' -> desceDir();
+                    case 'T' -> esfera.desceDir();
                     case 'C' -> perdeVida();
-                    case 'E' -> desceEsq();
-                    case 'D' -> sobeEsq();
-                    default -> sobeDir();
+                    case 'E' -> esfera.desceEsq();
+                    case 'D' -> esfera.sobeEsq();
+                    default -> esfera.sobeDir();
                 }
             }
             case 'e' -> {
                 switch(direcaoX){
-                    case 'T' -> desceEsq();
+                    case 'T' -> esfera.desceEsq();
                     case 'C' -> perdeVida();
-                    case 'E' -> sobeDir();
-                    case 'D' -> desceDir();
-                    default -> sobeEsq();
+                    case 'E' -> esfera.sobeDir();
+                    case 'D' -> esfera.desceDir();
+                    default -> esfera.sobeEsq();
                 }
             }
         }
+    }
+    
+    public void desenhaTexto(GL2 gl, int xPosicao, int yPosicao, Color cor, String frase){         
+        gl.glPolygonMode(GL2.GL_FRONT_AND_BACK, GL2.GL_FILL);
+        //Retorna a largura e altura da janela
+        textRenderer.beginRendering(Renderer.screenWidth, Renderer.screenHeight);       
+        textRenderer.setColor(cor);
+        textRenderer.draw(frase, xPosicao, yPosicao);
+        textRenderer.endRendering();
+        gl.glPolygonMode(GL2.GL_FRONT_AND_BACK, mode);
     }
     
     
@@ -243,17 +253,16 @@ public class Cena implements GLEventListener{
         geradorLadoRandomico();
         this.tBarra = 0.2f;
         this.faseJogo = 1;
-        this.valorVariavel = valorVariavelAleatorio();
+        this.textRenderer = new TextRenderer(new Font("Comic Sans MS Negrito", Font.BOLD, 15));
         
     }
-
+    
+    
     @Override
     public void display(GLAutoDrawable drawable) {  
         //obtem o contexto Opengl
         GL2 gl = drawable.getGL().getGL2();   
-        Barra barra = new Barra(this.tBarra);
-        Esfera esfera = new Esfera();
-        Quadrado quadrado = new Quadrado(this.tTela);
+        
         //Tela tela = new Tela(tTela);
         
         //define a cor da janela (R, G, G, alpha)
@@ -270,20 +279,21 @@ public class Cena implements GLEventListener{
         gl.glColor3f(1,1,1); //cor branca        
         //tela.draw(gl);
         if(!jogoPausado && !jogoParado) geradorDeColisao();
-        esfera.avancoEsfera(this.xAtual, this.yAtual, this.posicaoInicialEsfera);
+        esfera.avancoEsfera(0, 0, this.posicaoInicialEsfera);
         
-        
-        
+        quadrado.settQuadrado(tTela);
         quadrado.draw(gl);
         this.localizacaoQuadrado = quadrado.gettQuadrado();
-            
-        
         
         barra.setTamanhoBarra(this.tBarra);
         barra.setTranslacao(translacao);
         barra.draw(gl);
         
         esfera.draw(gl);
+        esfera.setVelocidadeJogo(this.velocidadeJogo);
+        this.desenhaTexto(gl, 2, 2, Color.red, m);
+        this.desenhaTexto(gl, 1000, 1000, Color.red, "Teste");
+        
     }
 
     @Override
