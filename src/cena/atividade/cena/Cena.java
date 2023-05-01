@@ -176,14 +176,65 @@ public class Cena implements GLEventListener{
     }
     
     public void colisaoQuadrado(){
+        char dentroQuadrado = 'x';
+        char topoChaoQuadrado = 'x';
+        System.out.println(1+this.localizacaoQuadrado);
+        System.out.println(esfera.getyAtual()+this.posicaoInicialEsfera);
+        if(esfera.getxAtual() <= -this.localizacaoQuadrado); //System.out.println("Esquerdo");
+        else if(esfera.getxAtual() >= this.localizacaoQuadrado);//System.out.println("Direito");
+        else dentroQuadrado = 'd';
+        //if(esfera.getyAtual() >= 3*this.localizacaoQuadrado) topoChaoQuadrado = 'a';
+        if(esfera.getyAtual() <= (3*this.localizacaoQuadrado) && (esfera.getyAtual()+this.posicaoInicialEsfera+this.localizacaoQuadrado) >= 0) topoChaoQuadrado = 'd';
+//        else if(esfera.getyAtual()+this.posicaoInicialEsfera+this.localizacaoQuadrado <= 0)System.out.println("Abaixo");
+//        else topoChaoQuadrado = 'd';
+        if(dentroQuadrado == 'd' && topoChaoQuadrado == 'd')mudaDirecao();//{this.direcaoX = 'T'; this.ladoEsfera = 'd';}
+//        else if(dentroQuadrado == 'd' && topoChaoQuadrado == 'd') mudaDirecao();
+        //if(dentroQuadrado == 'd' && esfera.getyAtual()+this.posicaoInicialEsfera+this.localizacaoQuadrado >= 0)mudaDirecao();
+//        else if(esfera.getxAtual() >= this.localizacaoQuadrado) esqDirQuadrado = 'd';
+//        else esqDirQuadrado = 'a';
+//        if(esfera.getyAtual()+this.posicaoInicialEsfera+this.localizacaoQuadrado >= 0) topoChaoQuadrado = 'c';
+//        else if(esfera.getyAtual()+this.posicaoInicialEsfera <= this.localizacaoQuadrado) topoChaoQuadrado = 't';
         
+//        switch(esqDirQuadrado){
+//            case 'd' -> {
+//                System.out.println("Lado Direito");
+//                switch(topoChaoQuadrado){
+////                case 't' -> {this.ladoEsfera = 'e'; this.direcaoX = 'T';}
+////                case 'c' -> {this.ladoEsfera = 'd'; this.direcaoX = 'T';}
+//                }
+//            }
+//            case 'e' -> {
+//                System.out.println("Lado Esquerdo");
+//                switch(topoChaoQuadrado){
+////                case 't' -> {this.ladoEsfera = 'd'; this.direcaoX = 'T';}
+////                case 'c' -> {this.ladoEsfera = 'e'; this.direcaoX = 'T';}
+//                }
+//            }
+                
+//        }
+            
+            
+//       if((esfera.getxAtual() >= -this.localizacaoQuadrado &&
+//        esfera.getxAtual() <= this.localizacaoQuadrado) &&
+//        (esfera.getyAtual()+this.posicaoInicialEsfera+this.localizacaoQuadrado >= 0 &&
+//        esfera.getyAtual()+this.posicaoInicialEsfera <= this.localizacaoQuadrado)
+//       )mudaDirecao();
+    }
+        
+//        if(esfera.getxAtual() < -quadrado.gettQuadrado()){
+//            this.ladoEsfera = 'd';
+//            this.direcaoX = 'D';
+//        };
+//        System.out.println(esfera.getxAtual());
+//        System.out.println(-quadrado.gettQuadrado());
+        //if(esfera.getyAtual() > quadrado.gettQuadrado()-1) mudaDirecao();
         //if(esfera.getxAtual() > -quadrado.gettQuadrado() && esfera.getxAtual() < quadrado.gettQuadrado());
         //if(esfera.getyAtual() < quadrado.gettQuadrado());
         //if(esfera.getyAtual() >= 3*quadrado.gettQuadrado() && (esfera.getxAtual() <= -quadrado.gettQuadrado() && esfera.getxAtual() >= quadrado.gettQuadrado())) mudaDirecao();
         //else if(esfera.getyAtual() >= quadrado.gettQuadrado() && (esfera.getxAtual() <= -quadrado.gettQuadrado() && esfera.getxAtual() >= quadrado.gettQuadrado()))mudaDirecao();
         //else if(esfera.getxAtual() <= -quadrado.gettQuadrado() && (esfera.getyAtual() <= quadrado.gettQuadrado() && esfera.getyAtual() <= 3*quadrado.gettQuadrado())) mudaDirecao();
         //else if(esfera.getxAtual() >= quadrado.gettQuadrado() && (esfera.getyAtual() <= quadrado.gettQuadrado() && esfera.getyAtual() <= 3*quadrado.gettQuadrado())) mudaDirecao();
-    }
+//    }
     
     public void colisaoParedes(){
         //TETO
@@ -201,12 +252,13 @@ public class Cena implements GLEventListener{
     }
     
     public void geradorDeColisao(){
+        colisaoQuadrado();
         //COLISAO BARRA
         colisaoBarra();
         //COLISAO PAREDES
         colisaoParedes();
         //COLSIAO QUADRADO
-        colisaoQuadrado();
+        
         
         
         switch(ladoEsfera){
