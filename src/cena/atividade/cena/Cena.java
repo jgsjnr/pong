@@ -141,7 +141,9 @@ public class Cena implements GLEventListener{
     public void mudaDirecao(){
         if(this.ladoEsfera == 'd') this.ladoEsfera = 'e';
         else this.ladoEsfera = 'd';
-        this.direcaoX = 'T';
+        if(esfera.getyAtual() >= (2.4f*this.localizacaoQuadrado))this.direcaoX = 'H';
+        else this.direcaoX = 'T';
+        esfera.setValorVariavel(this.valorVariavelAleatorio());
     }
     
     public float valorVariavelAleatorio(){
@@ -187,6 +189,7 @@ public class Cena implements GLEventListener{
         if(esfera.getyAtual() <= (3*this.localizacaoQuadrado) && (esfera.getyAtual()+this.posicaoInicialEsfera+this.localizacaoQuadrado) >= 0) topoChaoQuadrado = 'd';
 //        else if(esfera.getyAtual()+this.posicaoInicialEsfera+this.localizacaoQuadrado <= 0)System.out.println("Abaixo");
 //        else topoChaoQuadrado = 'd';
+
         if(dentroQuadrado == 'd' && topoChaoQuadrado == 'd')mudaDirecao();//{this.direcaoX = 'T'; this.ladoEsfera = 'd';}
 //        else if(dentroQuadrado == 'd' && topoChaoQuadrado == 'd') mudaDirecao();
         //if(dentroQuadrado == 'd' && esfera.getyAtual()+this.posicaoInicialEsfera+this.localizacaoQuadrado >= 0)mudaDirecao();
@@ -249,15 +252,16 @@ public class Cena implements GLEventListener{
         else if(esfera.getxAtual() <= -this.tTela && esfera.getyAtual() >= this.tTela){this.ladoEsfera = 'e'; this.direcaoX = 'T';}
         //ACIMA DE 1 e 1
         else if(esfera.getxAtual() >= this.tTela && esfera.getyAtual() >= this.tTela){this.ladoEsfera = 'd'; this.direcaoX = 'T';}
+        //if(this.direcaoX == 'H') if(this.ladoEsfera == 'd') this.direcaoX = 'T'; else this.direcaoX = 'T';
     }
     
     public void geradorDeColisao(){
-        colisaoQuadrado();
         //COLISAO BARRA
         colisaoBarra();
         //COLISAO PAREDES
         colisaoParedes();
         //COLSIAO QUADRADO
+        colisaoQuadrado();
         
         
         
