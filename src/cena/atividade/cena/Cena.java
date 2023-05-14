@@ -27,7 +27,7 @@ public class Cena implements GLEventListener{
    
     String m = mode == GL2.GL_LINE ? "LINE" : "FILL";
     
-    
+    private float a;
     
     private int faseJogo;
     private boolean jogoPausado = false;
